@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.groupproject.JoinPageController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="When2Meet"/>
+
+    <AnchorPane>
+
+        <!-- Left side (name) -->
+
+        <VBox alignment="CENTER" spacing="20.0" AnchorPane.leftAnchor="10">
+            <HBox>
+                <Label text="Your name:  "/>
+                <TextField fx:id="userNameTextField"/>
+            </HBox>
+        </VBox>
+
+        <!-- Right side (calendar, submit) -->
+
+        <VBox alignment="CENTER" spacing="20.0" AnchorPane.rightAnchor="10">
+            <HBox alignment="CENTER" spacing="10.0">
+                <Button text="&lt;" onAction="#onLeftButtonClick"/>
+                <Label fx:id="monthYearLabel"/>
+                <Button text="&gt;" onAction="#onRightButtonClick"/>
+            </HBox>
+            <GridPane fx:id="calendarGrid"/>
+            <Button text="Create" onAction="#onJoinButtonClick"/>
+        </VBox>
+    </AnchorPane>
+</VBox>
