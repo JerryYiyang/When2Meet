@@ -1,7 +1,7 @@
 USE when2meet;
 
 CREATE TABLE event_table(
-	eid SERIAL UNIQUE,
+	eid VARCHAR(128) UNIQUE,
     title VARCHAR(128)
 );
 
