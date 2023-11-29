@@ -22,12 +22,62 @@ public class DatabaseConnection {
 
     public void addEvent(String eid, String name){
         try {
-            Statement statement = connect.createStatement();
-
-            statement.executeUpdate(
-                    "Insert into event_table values(" + eid + ", " + name +")");
+            PreparedStatement ps = connect.prepareStatement("INSERT INTO event_table (eid, title) VALUES (?, ?)");
+            ps.setString(1, eid);
+            ps.setString(2, name);
+            ps.executeUpdate();
+            connect.commit();
+            ps.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public Boolean checkID(String id){
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean isEidPresent = false;
+
+        try {
+            String sql = "SELECT eid FROM event_table WHERE eid = ?";
+            ps = connect.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            isEidPresent = rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(rs, ps);
+        }
+
+        return isEidPresent;
+    }
+
+    public void closeConnection() {
+        try {
+            if (connect != null) {
+                connect.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void closeResources(ResultSet rs, Statement statement) {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (statement != null) {
+                statement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
