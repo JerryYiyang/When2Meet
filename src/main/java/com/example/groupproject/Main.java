@@ -14,7 +14,7 @@ public class Main extends Application {
 
     static private Stage stage;
 
-    static final private int width = 660;
+    static final private int width = 860;
     static final private int height = 460;
 
     public static void main(String[] args) {

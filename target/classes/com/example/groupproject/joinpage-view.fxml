@@ -7,6 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.chart.PieChart?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.groupproject.JoinPageController">
     <padding>
@@ -28,14 +29,23 @@
 
         <!-- Right side (calendar, submit) -->
 
-        <VBox alignment="CENTER" spacing="20.0" AnchorPane.rightAnchor="10">
-            <HBox alignment="CENTER" spacing="10.0">
-                <Button text="&lt;" onAction="#onLeftButtonClick"/>
-                <Label fx:id="monthYearLabel"/>
-                <Button text="&gt;" onAction="#onRightButtonClick"/>
-            </HBox>
-            <GridPane fx:id="calendarGrid"/>
-            <Button text="Create" onAction="#onJoinButtonClick"/>
-        </VBox>
+        <HBox alignment="CENTER" spacing="10.0" AnchorPane.rightAnchor="10">
+            <VBox alignment="CENTER" spacing="20.0">
+                <HBox alignment="CENTER" spacing="10.0">
+                    <Button text="&lt;" onAction="#onLeftButtonClick"/>
+                    <Label fx:id="monthYearLabel"/>
+                    <Button text="&gt;" onAction="#onRightButtonClick"/>
+                </HBox>
+                <GridPane fx:id="calendarGrid"/>
+                <Button text="Create" onAction="#onJoinButtonClick"/>
+            </VBox>
+            <VBox alignment="CENTER" spacing="5.0">
+                <HBox alignment="CENTER">
+                    <ToggleButton fx:id="amToggleButton" text="AM" onAction="#onAMButtonClick"/>
+                    <ToggleButton fx:id="pmToggleButton" text="PM" onAction="#onPMButtonClick"/>
+                </HBox>
+                <PieChart fx:id="clockPieChart"/>
+            </VBox>
+        </HBox>
     </AnchorPane>
 </VBox>
