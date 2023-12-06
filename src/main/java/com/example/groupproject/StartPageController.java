@@ -1,27 +1,26 @@
 package com.example.groupproject;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Popup;
+import src.main.java.com.example.groupproject.DatabaseConnection;
+import src.main.java.com.example.groupproject.Main;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class StartPageController {
     @FXML
     public TextField eventID;
+    private static DatabaseConnection connect = DatabaseConnection.getInstance();
 
     @FXML
     private void onJoinButtonClick() throws IOException {
         /* TODO: Validate event ID using database */
-        if(Objects.equals(eventID.getText(), ""))
+        if(connect.checkID(eventID.getText()))
         {
-            Main.makeErrorPopup("Invalid event ID");
+            Main.loadJoinPage();
         }
         else {
-            Main.loadJoinPage();
+            Main.makeErrorPopup("Invalid event ID");
         }
     }
 

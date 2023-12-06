@@ -1,13 +1,13 @@
 package com.example.groupproject;
 
-import javafx.event.ActionEvent;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
+import src.main.java.com.example.groupproject.DatabaseConnection;
+import src.main.java.com.example.groupproject.Main;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -23,6 +23,8 @@ public class MakePageController {
     public ToggleButton amToggleButton;
     public ToggleButton pmToggleButton;
     private Calendar cal;
+
+    private static DatabaseConnection connect = DatabaseConnection.getInstance();
 
     public void initialize()
     {
@@ -45,12 +47,24 @@ public class MakePageController {
         ArrayList<LocalDate> selectedDates = data.getKey();
         ArrayList<ArrayList<Integer>> selectedTimes = data.getValue();
         /* TODO: make new event */
+        String ID = eventIDTextField.getText();
+        connect.addEvent(ID, eventNameTextField.getText());
+        connect.enterDates(selectedDates);
+        for(int i = 0; i < selectedDates.size(); i++){
+            String times = "";
+            for(Integer time : selectedTimes.get(i)){
+                times += Integer.toString(time);
+                times += " ";
+            }
+            connect.setPossibleTimes(selectedDates.get(i), ID, times);
+        }
         Main.loadEndMakePage();
     }
 
     public void onNameTextFieldType() {
         /* TODO: ensure the ID is not already used; if it is, then change ID to ID+i, for example birthday2, or birthday3 */
         eventIDTextField.setText(eventNameTextField.getText());
+        Boolean checkID = connect.checkID(eventIDTextField.getText());
     }
 
     public void onPMButtonClick() {

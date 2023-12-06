@@ -8,6 +8,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
+import src.main.java.com.example.groupproject.DatabaseConnection;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -23,15 +24,22 @@ public class JoinPageController {
     public ToggleButton pmToggleButton;
     private Calendar cal;
 
+    private static DatabaseConnection connect = DatabaseConnection.getInstance();
+
     public void initialize()
     {
         /* TODO: Get day data for the event */
-            ArrayList<LocalDate> possibleDates = new ArrayList<>();
-            possibleDates.add(LocalDate.now());
-            ArrayList<ArrayList<Integer>> possibleTimes = new ArrayList<>();
-            possibleTimes.add(new ArrayList<>());
-            possibleTimes.get(0).add(2);
-            possibleTimes.get(0).add(3);
+        ArrayList<ArrayList<Integer>> possibleTimes = new ArrayList<>();
+        ArrayList<LocalDate> possibleDates = connect.getDates();
+        ArrayList<String> allTimes = connect.getPossibleTimes();
+        for(int i = 0; i < possibleDates.size(); i++){
+            ArrayList<Integer> ti = new ArrayList<>();
+            String[] t = allTimes.get(i).split(" ");
+            for(int j = 0; j < allTimes.size(); j++){
+                ti.add(Integer.valueOf(t[j]));
+            }
+            possibleTimes.add(ti);
+        }
         cal = new Calendar(calendarGrid, clockPieChart, monthYearLabel, possibleDates, possibleTimes);
         onPMButtonClick();
         greenButton(pmToggleButton);
@@ -51,6 +59,7 @@ public class JoinPageController {
         ArrayList<LocalDate> selectedDates = data.getKey();
         ArrayList<ArrayList<Integer>> selectedTimes = data.getValue();
         /* TODO: create new user in database */
+
         Main.loadEndJoinPage();
     }
 

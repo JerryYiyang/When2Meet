@@ -4,9 +4,10 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseConnection {
-    static Connection connect;
+    private static DatabaseConnection instance;
+    private Connection connect;
 
-    public DatabaseConnection() {
+    private DatabaseConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connect = DriverManager.getConnection(
@@ -18,8 +19,11 @@ public class DatabaseConnection {
         }
     }
 
-    public Connection getConnect(){
-        return connect;
+    public static DatabaseConnection getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        return instance;
     }
 
     public void addEvent(String eid, String name){
@@ -45,6 +49,20 @@ public class DatabaseConnection {
                 ps.setString(1, date);
                 ps.executeUpdate();
             }
+            connect.commit();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setPossibleTimes(String date, String eid, String times){
+        try {
+            PreparedStatement ps = connect.prepareStatement("INSERT INTO possibleTimes VALUES (?, ?, ?)");
+            ps.setString(1, date);
+            ps.setString(2, eid);
+            ps.setString(3, times);
+            ps.executeUpdate();
             connect.commit();
             ps.close();
         } catch (SQLException e) {
@@ -126,7 +144,6 @@ public class DatabaseConnection {
         PreparedStatement ps = null;
         ResultSet rs = null;
         boolean isEidPresent = false;
-
         try {
             ps = connect.prepareStatement("SELECT eid FROM event_table WHERE eid = ?");
             ps.setString(1, id);
@@ -140,6 +157,62 @@ public class DatabaseConnection {
 
         return isEidPresent;
     }
+
+    public Boolean checkPerson(String name){
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean isNamePresent = false;
+        try {
+            ps = connect.prepareStatement("SELECT p_name FROM person WHERE p_name = ?");
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            isNamePresent = rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(rs, ps);
+        }
+        return isNamePresent;
+    }
+
+    public ArrayList<String> getDates() {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<String> dates = new ArrayList<>();
+        try {
+            ps = connect.prepareStatement("SELECT date_ FROM dates");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String date = rs.getString("date_");
+                dates.add(date);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(rs, ps);
+        }
+        return dates;
+    }
+
+    public ArrayList<String> getPossibleTimes(){
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<String> times = new ArrayList<>();
+        try {
+            ps = connect.prepareStatement("SELECT times FROM possibleTimes");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String time = rs.getString("times");
+                times.add(time);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(rs, ps);
+        }
+        return times;
+    }
+
 
     public void closeConnection() {
         try {

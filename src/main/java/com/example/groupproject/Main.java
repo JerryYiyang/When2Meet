@@ -1,11 +1,9 @@
-package com.example.groupproject;
+package src.main.java.com.example.groupproject;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +15,8 @@ public class Main extends Application {
     static final private int width = 860;
     static final private int height = 460;
 
+    private static DatabaseConnection connect = DatabaseConnection.getInstance();
+
     public static void main(String[] args) {
         launch();
     }
@@ -25,7 +25,11 @@ public class Main extends Application {
     public void start(Stage s) throws IOException {
         stage = s;
         stage.setTitle("When2Meet");
+        stage.setOnCloseRequest(event -> {
+            connect.closeConnection();
+        });
         loadStartPage();
+
     }
 
     public static void makeErrorPopup(String s) {
