@@ -6,8 +6,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-import src.main.java.com.example.groupproject.DatabaseConnection;
-import src.main.java.com.example.groupproject.Main;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -44,9 +42,13 @@ public class MakePageController {
 
     public void onCreateButtonClick() throws IOException {
         Pair<ArrayList<LocalDate>, ArrayList<ArrayList<Integer>>> data = cal.getCalendarData();
-        ArrayList<LocalDate> selectedDates = data.getKey();
+        ArrayList<LocalDate> selectedDatesD = data.getKey();
         ArrayList<ArrayList<Integer>> selectedTimes = data.getValue();
         /* TODO: make new event */
+        ArrayList<String> selectedDates = new ArrayList<>();
+        for (LocalDate localDate : selectedDatesD) {
+            selectedDates.add(localDate.toString());
+        }
         String ID = eventIDTextField.getText();
         connect.addEvent(ID, eventNameTextField.getText());
         connect.enterDates(selectedDates);

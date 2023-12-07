@@ -1,4 +1,4 @@
-package src.main.java.com.example.groupproject;
+package com.example.groupproject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,10 +11,22 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connect = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/ambari-node5.csc.calpoly.edu",
-                    "jehuo", "27667776");
+                    "jdbc:mysql://ambari-node5.csc.calpoly.edu:3306/kowczare",
+                    "kowczare", "29773555");
+            String schemaName = "kowczare";
+            setDefaultSchema(connect, schemaName);
             connect.setAutoCommit(false);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void setDefaultSchema(Connection connection, String schemaName) {
+        try (Statement statement = connection.createStatement()) {
+            // Use the USE statement to set the default schema
+            String sql = "USE " + schemaName;
+            statement.execute(sql);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

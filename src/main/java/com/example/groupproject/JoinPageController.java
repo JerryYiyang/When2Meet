@@ -1,14 +1,11 @@
 package com.example.groupproject;
 
-import javafx.event.ActionEvent;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-import src.main.java.com.example.groupproject.DatabaseConnection;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -30,9 +27,9 @@ public class JoinPageController {
     {
         /* TODO: Get day data for the event */
         ArrayList<ArrayList<Integer>> possibleTimes = new ArrayList<>();
-        ArrayList<LocalDate> possibleDates = connect.getDates();
+        ArrayList<String> possibleDatesString = connect.getDates();
         ArrayList<String> allTimes = connect.getPossibleTimes();
-        for(int i = 0; i < possibleDates.size(); i++){
+        for(int i = 0; i < possibleDatesString.size(); i++){
             ArrayList<Integer> ti = new ArrayList<>();
             String[] t = allTimes.get(i).split(" ");
             for(int j = 0; j < allTimes.size(); j++){
@@ -40,6 +37,12 @@ public class JoinPageController {
             }
             possibleTimes.add(ti);
         }
+
+        ArrayList<LocalDate> possibleDates = new ArrayList<>();
+        for (String s : possibleDatesString) {
+            possibleDates.add(LocalDate.parse(s));
+        }
+
         cal = new Calendar(calendarGrid, clockPieChart, monthYearLabel, possibleDates, possibleTimes);
         onPMButtonClick();
         greenButton(pmToggleButton);

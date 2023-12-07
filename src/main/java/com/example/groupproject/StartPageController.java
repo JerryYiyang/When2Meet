@@ -2,8 +2,6 @@ package com.example.groupproject;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import src.main.java.com.example.groupproject.DatabaseConnection;
-import src.main.java.com.example.groupproject.Main;
 
 import java.io.IOException;
 
