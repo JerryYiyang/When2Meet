@@ -95,16 +95,15 @@ public class DatabaseConnection {
         }
     }
 
-    public void enterAvailability(String start_time, String end_time, String person, String date,
-                                  String event){
+    public void enterAvailability(String times, String person, String event,
+                                  String date){
         try{
             PreparedStatement ps = connect.prepareStatement("INSERT INTO availability " +
-                    "VALUES (?, ?, ?, ?, ?)");
-            ps.setString(1, start_time);
-            ps.setString(2, end_time);
-            ps.setString(3, person);
+                    "VALUES (?, ?, ?, ?)");
+            ps.setString(1, times);
+            ps.setString(2, person);
+            ps.setString(3, event);
             ps.setString(4, date);
-            ps.setString(5, event);
             ps.executeUpdate();
             connect.commit();
             ps.close();
@@ -113,16 +112,15 @@ public class DatabaseConnection {
         }
     }
 
-    public void updateAvailability(String start_time, String end_time, String person, int date,
+    public void updateAvailability(String times, String person, String date,
                                    String event){
         try{
             PreparedStatement ps = connect.prepareStatement(
-                    "UPDATE availability SET start_time = ?, end_time = ? WHERE p_name = ? AND eid = ? AND date_id = ?");
-            ps.setString(1, start_time);
-            ps.setString(2, end_time);
-            ps.setString(3, person);
+                    "UPDATE availability SET times = ? WHERE p_name = ? AND date_ = ? AND eid = ?");
+            ps.setString(1, times);
+            ps.setString(2, person);
+            ps.setString(3, date);
             ps.setString(4, event);
-            ps.setInt(5, date);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
@@ -130,21 +128,20 @@ public class DatabaseConnection {
         }
     }
 
-    public ArrayList<String[]> getAvailability(String event_id, String date_id){
+    public ArrayList<String> getAvailability(String event_id, String date_id){
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<String[]> result = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<>();
         try{
-            ps = connect.prepareStatement("SELECT a.start_time, a.end_time" +
+            ps = connect.prepareStatement("SELECT times" +
                     "FROM availability a join dates d on a.date_ = d.date_" +
                     "WHERE a.eid = ? AND d.date_ = ?");
             ps.setString(1, event_id);
             ps.setString(2, date_id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                String startTime = rs.getString("start_time");
-                String endTime = rs.getString("end_time");
-                result.add(new String[]{startTime, endTime});
+                String t = rs.getString("times");
+                result.add(t);
             }
         } catch (SQLException e) {
             e.printStackTrace();
