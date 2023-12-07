@@ -11,9 +11,9 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connect = DriverManager.getConnection(
-                    "jdbc:mysql://ambari-node5.csc.calpoly.edu:3306/jehuo",
-                    "jehuo", "27667776");
-            String schemaName = "jehuo";
+                    "jdbc:mysql://ambari-node5.csc.calpoly.edu:3306/kowczare",
+                    "kowczare", "29773555");
+            String schemaName = "kowczare";
             setDefaultSchema(connect, schemaName);
             connect.setAutoCommit(false);
         } catch (Exception e) {
