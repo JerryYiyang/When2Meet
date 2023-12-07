@@ -16,6 +16,7 @@ public class Main extends Application {
     static final private int height = 460;
 
     private static DatabaseConnection connect = DatabaseConnection.getInstance();
+    private static String currentEventID;
 
     public static void main(String[] args) {
         launch();
@@ -64,5 +65,15 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load(), width, height);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static String getCurrentEventID()
+    {
+        return currentEventID;
+    }
+
+    public static void setCurrentEventID(String ID)
+    {
+        currentEventID = ID;
     }
 }

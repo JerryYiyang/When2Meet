@@ -15,6 +15,7 @@ public class StartPageController {
         /* TODO: (done!) Validate event ID using database */
         if(connect.checkID(eventID.getText()))
         {
+            Main.setCurrentEventID(eventID.getText());
             Main.loadJoinPage();
         }
         else {

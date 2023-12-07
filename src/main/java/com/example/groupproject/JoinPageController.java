@@ -68,9 +68,12 @@ public class JoinPageController {
 
     public void onJoinButtonClick() throws IOException {
         Pair<ArrayList<LocalDate>, ArrayList<ArrayList<Integer>>> data = cal.getCalendarData();
+
+        // data
         ArrayList<LocalDate> selectedDates = data.getKey();
         ArrayList<ArrayList<Integer>> selectedTimes = data.getValue();
-        String name = userNameTextField.getText();
+        String userName = userNameTextField.getText();
+        String eventID = Main.getCurrentEventID();
 
         for(ArrayList<Integer> a : selectedTimes)
         {
@@ -84,7 +87,7 @@ public class JoinPageController {
             Main.makeErrorPopup("No dates/times selected");
             return;
         }
-        if(name.isEmpty()) {
+        if(userName.isEmpty()) {
             Main.makeErrorPopup("No name entered");
             return;
         }
