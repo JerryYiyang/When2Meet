@@ -51,7 +51,7 @@ public class MakePageController {
         }
         String ID = eventIDTextField.getText();
         connect.addEvent(ID, eventNameTextField.getText());
-        connect.enterDates(selectedDates);
+        connect.enterDates(selectedDates, ID);
         for(int i = 0; i < selectedDates.size(); i++){
             String times = "";
             for(Integer time : selectedTimes.get(i)){
