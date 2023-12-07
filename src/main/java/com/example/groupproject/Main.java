@@ -26,10 +26,10 @@ public class Main extends Application {
         stage = s;
         stage.setTitle("When2Meet");
         stage.setOnCloseRequest(event -> {
+            connect.clearDatabase();
             connect.closeConnection();
         });
         loadStartPage();
-
     }
 
     public static void makeErrorPopup(String s) {

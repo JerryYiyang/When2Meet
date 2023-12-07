@@ -44,14 +44,13 @@ public class MakePageController {
         Pair<ArrayList<LocalDate>, ArrayList<ArrayList<Integer>>> data = cal.getCalendarData();
         ArrayList<LocalDate> selectedDatesD = data.getKey();
         ArrayList<ArrayList<Integer>> selectedTimes = data.getValue();
-        /* TODO: make new event */
         ArrayList<String> selectedDates = new ArrayList<>();
         for (LocalDate localDate : selectedDatesD) {
             selectedDates.add(localDate.toString());
         }
         String ID = eventIDTextField.getText();
         connect.addEvent(ID, eventNameTextField.getText());
-        connect.enterDates(selectedDates);
+        connect.enterDates(selectedDates, ID);
         for(int i = 0; i < selectedDates.size(); i++){
             String times = "";
             for(Integer time : selectedTimes.get(i)){
@@ -64,9 +63,9 @@ public class MakePageController {
     }
 
     public void onNameTextFieldType() {
-        /* TODO: ensure the ID is not already used; if it is, then change ID to ID+i, for example birthday2, or birthday3 */
         eventIDTextField.setText(eventNameTextField.getText());
         Boolean checkID = connect.checkID(eventIDTextField.getText());
+        /*TODO: still need to change what happens if id is in it already*/
     }
 
     public void onPMButtonClick() {

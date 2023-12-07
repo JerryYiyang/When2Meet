@@ -11,9 +11,9 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connect = DriverManager.getConnection(
-                    "jdbc:mysql://ambari-node5.csc.calpoly.edu:3306/kowczare",
-                    "kowczare", "29773555");
-            String schemaName = "kowczare";
+                    "jdbc:mysql://ambari-node5.csc.calpoly.edu:3306/jehuo",
+                    "jehuo", "27667776");
+            String schemaName = "jehuo";
             setDefaultSchema(connect, schemaName);
             connect.setAutoCommit(false);
         } catch (Exception e) {
@@ -23,7 +23,6 @@ public class DatabaseConnection {
 
     private static void setDefaultSchema(Connection connection, String schemaName) {
         try (Statement statement = connection.createStatement()) {
-            // Use the USE statement to set the default schema
             String sql = "USE " + schemaName;
             statement.execute(sql);
         } catch (SQLException e) {
@@ -40,9 +39,8 @@ public class DatabaseConnection {
 
     public void addEvent(String eid, String name){
         PreparedStatement ps = null;
-
         try {
-            ps = connect.prepareStatement("INSERT INTO event_table (eid, title) VALUES (?, ?)");
+            ps = connect.prepareStatement("INSERT INTO event_table (eid, event_name) VALUES (?, ?)");
             ps.setString(1, eid);
             ps.setString(2, name);
             ps.executeUpdate();
@@ -53,12 +51,13 @@ public class DatabaseConnection {
         }
     }
 
-    public void enterDates(ArrayList<String> dates){
+    public void enterDates(ArrayList<String> dates, String eid){
         try {
-            PreparedStatement ps = connect.prepareStatement("INSERT INTO dates VALUES (?)");
+            PreparedStatement ps = connect.prepareStatement("INSERT INTO dates VALUES (?, ?)");
 
             for (String date : dates) {
                 ps.setString(1, date);
+                ps.setString(2, eid);
                 ps.executeUpdate();
             }
             connect.commit();
@@ -70,7 +69,8 @@ public class DatabaseConnection {
 
     public void setPossibleTimes(String date, String eid, String times){
         try {
-            PreparedStatement ps = connect.prepareStatement("INSERT INTO possibleTimes VALUES (?, ?, ?)");
+            PreparedStatement ps = connect.prepareStatement("INSERT INTO possibleTimes " +
+                    "VALUES (?, ?, ?)");
             ps.setString(1, date);
             ps.setString(2, eid);
             ps.setString(3, times);
@@ -97,7 +97,7 @@ public class DatabaseConnection {
     public void enterAvailability(String start_time, String end_time, String person, String date,
                                   String event){
         try{
-            PreparedStatement ps = connect.prepareStatement("INSERT INTO availability" +
+            PreparedStatement ps = connect.prepareStatement("INSERT INTO availability " +
                     "VALUES (?, ?, ?, ?, ?)");
             ps.setString(1, start_time);
             ps.setString(2, end_time);
@@ -135,8 +135,8 @@ public class DatabaseConnection {
         ArrayList<String[]> result = new ArrayList<>();
         try{
             ps = connect.prepareStatement("SELECT a.start_time, a.end_time" +
-                    "FROM availability a join dates d on a.date_id = d.date_id" +
-                    "WHERE a.eid = ? AND d.date_id = ?");
+                    "FROM availability a join dates d on a.date_ = d.date_" +
+                    "WHERE a.eid = ? AND d.date_ = ?");
             ps.setString(1, event_id);
             ps.setString(2, date_id);
             rs = ps.executeQuery();
@@ -231,6 +231,19 @@ public class DatabaseConnection {
             if (connect != null) {
                 connect.close();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearDatabase() {
+        try (Statement statement = connect.createStatement()) {
+            statement.executeUpdate("DELETE FROM availability");
+            statement.executeUpdate("DELETE FROM person");
+            statement.executeUpdate("DELETE FROM possibleTimes");
+            statement.executeUpdate("DELETE FROM dates");
+            statement.executeUpdate("DELETE FROM event_table");
+            connect.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
