@@ -44,22 +44,44 @@ public class MakePageController {
         Pair<ArrayList<LocalDate>, ArrayList<ArrayList<Integer>>> data = cal.getCalendarData();
         ArrayList<LocalDate> selectedDatesD = data.getKey();
         ArrayList<ArrayList<Integer>> selectedTimes = data.getValue();
+        String ID = eventIDTextField.getText();
+
+        for(ArrayList<Integer> a : selectedTimes)
+        {
+            if(a.isEmpty()) {
+                Main.makeErrorPopup("Missing time data");
+                return;
+            }
+        }
+        if(selectedDatesD.isEmpty() || selectedTimes.isEmpty())
+        {
+            Main.makeErrorPopup("No dates/times selected");
+            return;
+        }
+        if(ID.isEmpty())
+        {
+            Main.makeErrorPopup("No name entered");
+            return;
+        }
+
         /* TODO: (done?) make new event */
         ArrayList<String> selectedDates = new ArrayList<>();
         for (LocalDate localDate : selectedDatesD) {
             selectedDates.add(localDate.toString());
         }
-        String ID = eventIDTextField.getText();
         connect.addEvent(ID, eventNameTextField.getText());
         connect.enterDates(selectedDates, ID);
         for(int i = 0; i < selectedDates.size(); i++){
-            String times = "";
+            StringBuilder times = new StringBuilder();
             for(Integer time : selectedTimes.get(i)){
-                times += Integer.toString(time);
-                times += " ";
+                times.append(Integer.toString(time));
+                times.append(" ");
             }
-            connect.setPossibleTimes(selectedDates.get(i), ID, times);
+            connect.setPossibleTimes(selectedDates.get(i), ID, times.toString());
         }
+        System.out.println("dates size: " + selectedDates.size() + " " + selectedDatesD.size()
+                + " times size: " + selectedTimes.size());
+
         Main.loadEndMakePage();
     }
 
@@ -72,12 +94,13 @@ public class MakePageController {
             return;
         }
 
+        System.out.println("trying new ID: " + s + extra);
         while(connect.checkID(s + extra))
         {
             extra++;
+            System.out.println("trying " + extra);
         }
-        if(s.equals(eventIDTextField.getText())) // make sure it hasn't changed
-            eventIDTextField.setText(s + extra);
+        eventIDTextField.setText(s + extra);
     }
 
     public void onPMButtonClick() {
