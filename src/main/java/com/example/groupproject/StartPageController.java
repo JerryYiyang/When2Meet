@@ -12,7 +12,7 @@ public class StartPageController {
 
     @FXML
     private void onJoinButtonClick() throws IOException {
-        /* TODO: Validate event ID using database */
+        /* TODO: (done!) Validate event ID using database */
         if(connect.checkID(eventID.getText()))
         {
             Main.loadJoinPage();

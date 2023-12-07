@@ -25,7 +25,7 @@ public class JoinPageController {
 
     public void initialize()
     {
-        /* TODO: Get day data for the event */
+        /* TODO: (done) Get day data for the event */
         ArrayList<ArrayList<Integer>> possibleTimes = new ArrayList<>();
         ArrayList<String> possibleDatesString = connect.getDates();
         ArrayList<String> allTimes = connect.getPossibleTimes();
