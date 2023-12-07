@@ -25,9 +25,10 @@ public class JoinPageController {
 
     public void initialize()
     {
+        String eid = Main.getCurrentEventID();
         /* TODO: (done) Get day data for the event */
-        ArrayList<String> dbDates = connect.getDates();
-        ArrayList<String> dbTimes = connect.getPossibleTimes();
+        ArrayList<String> dbDates = connect.getDates(eid);
+        ArrayList<String> dbTimes = connect.getPossibleTimes(eid);
 
         //if(dbDates.size() != dbTimes.size())
         System.out.println("dates size: " + dbDates.size() + " times size: " + dbTimes.size());
@@ -73,7 +74,7 @@ public class JoinPageController {
         ArrayList<LocalDate> selectedDates = data.getKey();
         ArrayList<ArrayList<Integer>> selectedTimes = data.getValue();
         String userName = userNameTextField.getText();
-        String eventID = Main.getCurrentEventID();
+        String eid = Main.getCurrentEventID();
 
         for(ArrayList<Integer> a : selectedTimes)
         {
@@ -92,8 +93,8 @@ public class JoinPageController {
             return;
         }
 
-        /* TODO: create new user in database */
-
+        /* TODO: (done) create new user in database */
+        connect.addPerson(userName, eid);
         Main.loadEndJoinPage();
     }
 
