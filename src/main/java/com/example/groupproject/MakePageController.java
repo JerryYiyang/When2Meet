@@ -65,14 +65,14 @@ public class MakePageController {
 
     public void onNameTextFieldType() {
         /* TODO: (done!) ensure the ID is not already used; if it is, then change ID to ID+i, for example birthday2, or birthday3 */
-        String s = eventIDTextField.getText();
+        String s = eventNameTextField.getText();
         int extra = 1;
-        if(connect.checkID(s)) {
+        if(!connect.checkID(s)) {
             eventIDTextField.setText(s);
             return;
         }
 
-        while(!connect.checkID(s + extra))
+        while(connect.checkID(s + extra))
         {
             extra++;
         }
