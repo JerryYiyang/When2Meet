@@ -82,10 +82,11 @@ public class DatabaseConnection {
         }
     }
 
-    public void addPerson(String name){
+    public void addPerson(String name, String eid){
         try{
-            PreparedStatement ps = connect.prepareStatement("INSERT INTO person VALUES (?)");
+            PreparedStatement ps = connect.prepareStatement("INSERT INTO person VALUES (?, ?)");
             ps.setString(1, name);
+            ps.setString(2, eid);
             ps.executeUpdate();
             connect.commit();
             ps.close();
@@ -187,12 +188,13 @@ public class DatabaseConnection {
         return isNamePresent;
     }
 
-    public ArrayList<String> getDates() {
+    public ArrayList<String> getDates(String eid) {
         PreparedStatement ps = null;
         ResultSet rs = null;
         ArrayList<String> dates = new ArrayList<>();
         try {
-            ps = connect.prepareStatement("SELECT date_ FROM dates");
+            ps = connect.prepareStatement("SELECT date_ FROM dates where eid = ?");
+            ps.setString(1, eid);
             rs = ps.executeQuery();
             while (rs.next()) {
                 String date = rs.getString("date_");
@@ -206,12 +208,13 @@ public class DatabaseConnection {
         return dates;
     }
 
-    public ArrayList<String> getPossibleTimes(){
+    public ArrayList<String> getPossibleTimes(String eid){
         PreparedStatement ps = null;
         ResultSet rs = null;
         ArrayList<String> times = new ArrayList<>();
         try {
-            ps = connect.prepareStatement("SELECT times FROM possibleTimes");
+            ps = connect.prepareStatement("SELECT times FROM possibleTimes where eid = ?");
+            ps.setString(1, eid);
             rs = ps.executeQuery();
             while (rs.next()) {
                 String time = rs.getString("times");
