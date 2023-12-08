@@ -4,9 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class Main extends Application {
 
@@ -45,6 +47,16 @@ public class Main extends Application {
         alert.setTitle("When2Meet");
         alert.setHeaderText(s);
         alert.show();
+    }
+
+    public static String makeInputPopup(String s) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("When2Meet");
+        dialog.setHeaderText(s);
+
+        Optional<String> result = dialog.showAndWait();
+
+        return result.orElse("");
     }
 
     public static void loadStartPage() throws IOException {

@@ -133,8 +133,8 @@ public class DatabaseConnection {
         ResultSet rs = null;
         ArrayList<String> result = new ArrayList<>();
         try{
-            ps = connect.prepareStatement("SELECT times" +
-                    "FROM availability a join dates d on a.date_ = d.date_" +
+            ps = connect.prepareStatement("SELECT times " +
+                    "FROM availability a join dates d on a.date_ = d.date_ " +
                     "WHERE a.eid = ? AND d.date_ = ?");
             ps.setString(1, event_id);
             ps.setString(2, date_id);
