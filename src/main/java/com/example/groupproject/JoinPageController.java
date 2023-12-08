@@ -94,7 +94,27 @@ public class JoinPageController {
         }
 
         /* TODO: (done) create new user in database */
-        connect.addPerson(userName, eid);
+        if(connect.checkPerson(userName)){
+            /*TODO: konrad look over the logic of this, i took the main code from makepagecontroller*/
+            for(int i = 0; i < selectedDates.size(); i++){
+                StringBuilder times = new StringBuilder();
+                for(Integer time : selectedTimes.get(i)){
+                    times.append(Integer.toString(time));
+                    times.append(" ");
+                }
+                connect.updateAvailability(times.toString(), userName, eid, String.valueOf(selectedDates.get(i)));
+            }
+        }else{
+            connect.addPerson(userName, eid);
+            for(int i = 0; i < selectedDates.size(); i++){
+                StringBuilder times = new StringBuilder();
+                for(Integer time : selectedTimes.get(i)){
+                    times.append(Integer.toString(time));
+                    times.append(" ");
+                }
+                connect.enterAvailability(times.toString(), userName, eid, String.valueOf(selectedDates.get(i)));
+            }
+        }
         Main.loadEndJoinPage();
     }
 
