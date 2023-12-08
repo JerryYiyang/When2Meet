@@ -112,6 +112,9 @@ public class StartPageController {
             }
         }
 
-        Main.makeInfoPopup("Ideal day & time: " + dates.get(listIndex) + " from " + startTime + ":00 - " + (startTime+eventLength) + ":00");
+        if(listIndex != -1 && startTime != -1)
+            Main.makeInfoPopup("Ideal day & time: " + dates.get(listIndex) + " from " + startTime + ":00 - " + (startTime+eventLength) + ":00");
+        else
+            Main.makeInfoPopup("No ideal date found");
     }
 }
