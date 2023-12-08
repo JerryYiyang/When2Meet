@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class StartPageController {
     @FXML
@@ -13,10 +14,21 @@ public class StartPageController {
     @FXML
     private void onJoinButtonClick() throws IOException {
         /* TODO: (done!) Validate event ID using database */
-        if(connect.checkID(eventID.getText()))
+        String eid;
+        boolean admin = eventID.getText().startsWith("*");
+        if(admin)
+            eid = eventID.getText().substring(1);
+        else
+            eid = eventID.getText();
+
+        if(connect.checkID(eid))
         {
-            Main.setCurrentEventID(eventID.getText());
-            Main.loadJoinPage();
+            if(admin) {
+                calculateBestTime(eid);
+            } else {
+                Main.setCurrentEventID(eid);
+                Main.loadJoinPage();
+            }
         }
         else {
             Main.makeErrorPopup("Invalid event ID");
@@ -26,5 +38,13 @@ public class StartPageController {
     @FXML
     private void onMakeButtonClick() throws IOException {
         Main.loadMakePage();
+    }
+
+    private void calculateBestTime(String eid) {
+        // TO-DO: get data for all users, all available dates and all available times
+        ArrayList<ArrayList<String>> dbAllDates;
+        ArrayList<ArrayList<String>> dbAllTimes;
+
+
     }
 }

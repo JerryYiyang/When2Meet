@@ -40,6 +40,13 @@ public class Main extends Application {
         alert.show();
     }
 
+    public static void makeInfoPopup(String s) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("When2Meet");
+        alert.setHeaderText(s);
+        alert.show();
+    }
+
     public static void loadStartPage() throws IOException {
         loadPage("startpage-view.fxml");
     }
@@ -76,4 +83,5 @@ public class Main extends Application {
     {
         currentEventID = ID;
     }
+
 }

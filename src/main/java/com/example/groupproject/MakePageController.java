@@ -46,6 +46,11 @@ public class MakePageController {
         ArrayList<ArrayList<Integer>> selectedTimes = data.getValue();
         String ID = eventIDTextField.getText();
 
+        if(ID.contains("*"))
+        {
+            Main.makeErrorPopup("Cannot use '*'");
+            return;
+        }
         for(ArrayList<Integer> a : selectedTimes)
         {
             if(a.isEmpty()) {
